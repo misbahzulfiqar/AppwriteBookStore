@@ -1,12 +1,9 @@
-import { useState } from 'react'
+import Routes from './Routes/Routes'
 
 function App() {
-
   return (
-    <>
-      <h1>Misbah Zulfiqar</h1>
-    </>
-  )
+    <Routes />
+  );
 }
 
-export default App
+export default App;
