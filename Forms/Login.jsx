@@ -12,6 +12,28 @@ function Login() {
     const dispatch = useDispatch()
     const { register, handleSubmit } = useForm()
     const [error, setError] = useState("")
+<<<<<<< HEAD
+    const login = async (data) => {
+  setError("")
+  try {
+    const result = await authService.login(data)
+
+    if (result.alreadyLoggedIn) {
+      alert("You are already logged in")
+    } else {
+      alert("You are successfully logged in")
+    }
+
+    const userData = await authService.getCurrentUser()
+    if (userData) dispatch(authLogin(userData))
+
+    navigate("/")
+
+  } catch (err) {
+    setError(err.message)
+  }
+}
+=======
     const [isForgotPassword, setIsForgotPassword] = useState(false)
     const [resetEmail, setResetEmail] = useState("")
     const [resetMessage, setResetMessage] = useState("")
@@ -149,6 +171,7 @@ function Login() {
         setError("")
     }
 
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
     return (
         <div
             style={{
@@ -158,7 +181,11 @@ function Login() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+<<<<<<< HEAD
+                backgroundColor: '#f5eee6', // very light brown
+=======
                 backgroundColor: '#f5eee6',
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
             }}
         >
             {/* Blurred overlay */}
@@ -182,13 +209,79 @@ function Login() {
                     zIndex: 2,
                     width: '100%',
                     maxWidth: '360px',
+<<<<<<< HEAD
+                    backgroundColor: 'white', // card white
+=======
                     backgroundColor: 'white',
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
                     borderRadius: '12px',
                     padding: '30px',
                     boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
                     textAlign: 'center',
                 }}
             >
+<<<<<<< HEAD
+                <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '10px', color: 'var(--dark-color)' }}>
+                    Sign in
+                </h2>
+                <p style={{ fontSize: '14px', color: 'var(--dark-color)', marginBottom: '18px' }}>
+                    Don&apos;t have an account? 
+                    <Link to="/signup" style={{ color: 'var(--black)', textDecoration: 'underline', marginLeft: '4px'}}>Sign Up</Link>
+                </p>
+                {error && <p style={{ color: '#ff4d4f', fontSize: '14px', marginBottom: '15px' }}>{error}</p>}
+                
+                <form onSubmit={handleSubmit(login)} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <Input
+                        label="Email"
+                        placeholder="Enter your email"
+                        type="email"
+                        style={{
+                            padding: '10px',
+                            fontSize: '14px',
+                            borderRadius: '8px',
+                            border: `1px solid var(--dark-color)`,
+                            color: 'var(--black)',
+                            backgroundColor: 'white',
+                        }}
+                        {...register("email", {
+                            required: true,
+                            validate: {
+                                matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Invalid email",
+                            },
+                        })}
+                    />
+                    <Input
+                        label="Password"
+                        type="password"
+                        placeholder="Enter your password"
+                        style={{
+                            padding: '10px',
+                            fontSize: '14px',
+                            borderRadius: '8px',
+                            border: `1px solid var(--dark-color)`,
+                            color: 'var(--black)',
+                            backgroundColor: 'white',
+
+                        }}
+                        {...register("password", { required: true })}
+                    />
+                    <Button
+                        type="submit"
+                        style={{
+                            padding: '12px',
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            backgroundColor: 'var(--dark-color)',
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            boxShadow: '0 3px 8px rgba(0,0,0,0.12)'
+                        }}
+                    >
+                        Sign in
+                    </Button>
+                </form>
+=======
                 {!isForgotPassword ? (
                     <>
                         <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '10px', color: 'var(--dark-color)' }}>
@@ -482,9 +575,14 @@ function Login() {
                         )}
                     </>
                 )}
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
             </div>
         </div>
     )
 }
 
+<<<<<<< HEAD
 export default Login
+=======
+export default Login
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92

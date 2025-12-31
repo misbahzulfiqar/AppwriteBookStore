@@ -42,19 +42,34 @@ function Signup() {
       }
 
       // 3. Send the verification email
+<<<<<<< HEAD
+      // IMPORTANT: Replace with your actual verification page URL
+=======
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
       const verificationUrl = `${window.location.origin}/verify`;
       
       try {
         await authService.sendVerificationEmail(verificationUrl);
         
+<<<<<<< HEAD
+        // 4. Update success state and show message
         setSuccessMessage(`Account created successfully! A verification email has been sent to ${data.email}. Please check your inbox and click the verification link.`);
         
+        // 5. Redirect after a short delay to let the user read the message
+=======
+        setSuccessMessage(`Account created successfully! A verification email has been sent to ${data.email}. Please check your inbox and click the verification link.`);
+        
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
         setTimeout(() => {
           navigate('/login');
         }, 5000);
         
       } catch (verificationError) {
         console.error('Verification email error:', verificationError);
+<<<<<<< HEAD
+        // Account was created and user is logged in, but email failed
+=======
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
         setSuccessMessage(`Account created successfully! However, we couldn't send the verification email. Please go to your account settings to request a new verification email.`);
         setTimeout(() => {
           navigate('/');
@@ -64,6 +79,10 @@ function Signup() {
     } catch (err) {
       console.error('Signup error:', err);
       
+<<<<<<< HEAD
+      // Handle main errors
+=======
+>>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
       if (err.code === 409 || err.type === 'user_already_exists') {
         setError('User already exists, please login.');
       } else if (err.code === 400) {
