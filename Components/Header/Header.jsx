@@ -24,22 +24,12 @@ const Header = () => {
           <div className="flex gap-3">
             <button
               onClick={() => navigate('/login')}
-<<<<<<< HEAD
-              className="`h-7.5` `w-15` bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors"
-=======
-              className="h-[30px] w-[60px] bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors"
->>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
             >
               Login
             </button>
             
             <button
               onClick={() => navigate('/signup')}
-<<<<<<< HEAD
-              className="h-7.5` `w-15` bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors"
-=======
-              className="h-[30px] w-[60px] bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors"
->>>>>>> 4ee818fb7628ac74c4602c81b05000021aa4ba92
             >
               Sign Up
             </button>
