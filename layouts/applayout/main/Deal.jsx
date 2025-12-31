@@ -11,7 +11,7 @@ const Deal = () => {
       </div>
       <div className="image">
         <img 
-          src="https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/deal-img.jpg" 
+          src="https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/deal-img.jpg" 
           alt="Deal of the day" 
         />
       </div>

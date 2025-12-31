@@ -12,7 +12,7 @@
   --box-shadow:0 .5rem 1rem rgba(75,58,42,.15);
 }
 
-/* Global Styles */
+/* Global styles */
 * {
   font-family: 'Poppins', sans-serif;
   margin:0;
@@ -46,7 +46,7 @@ section{
   padding:5rem 9%;
 }
 
-/* Common Components */
+/* Common components */
 .heading{
   text-align: center;
   margin-bottom: 2rem;
@@ -91,7 +91,7 @@ section{
 
 /* Home Section */
 .home{
-  background: url(https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/banner-bg.jpg) no-repeat;
+  background: url(https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/banner-bg.jpg) no-repeat;
   background-size: cover;
   background-position: center;
 }
@@ -238,7 +238,7 @@ section{
 
 /* Newsletter */
 .newsletter{
-  background:url(https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/letter-bg.jpg) no-repeat;
+  background:url(https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/letter-bg.jpg) no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -390,7 +390,7 @@ section{
   line-height: 2;
 }
 
-/* Footer */
+/* footer */
 .footer .box-container{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));

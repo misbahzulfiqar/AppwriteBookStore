@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login as authLogin } from '../store/authSlices'
-import Button from "../Components/button"
-import Input from "../Components/input"
+import Button from "../components/button"
+import Input from "../components/input"
 import { useDispatch } from "react-redux"
-import authService from "../Appwrite/Auth/authService"
+import authService from "../appwrite/auth/authService"
 import { useForm } from "react-hook-form"
 
 function Login() {
@@ -108,7 +108,7 @@ function Login() {
         setIsResetting(true)
 
         try {
-            // Update password using Appwrite's method
+            // Update password using appwrite's method
             const response = await authService.account.updateRecovery(
                 resetToken,
                 newPassword

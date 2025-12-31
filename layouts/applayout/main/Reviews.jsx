@@ -51,7 +51,7 @@ const Reviews = () => {
           {reviews.map((review) => (
             <div key={review.id} className="swiper-slide box">
               <img 
-                src={`https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/pic-${review.id}.png`} 
+                src={`https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/pic-${review.id}.png`} 
                 alt={review.name}
               />
               <h3>{review.name}</h3>

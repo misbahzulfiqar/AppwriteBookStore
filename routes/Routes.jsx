@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import MainLayout from '../Layouts/Applayout/Main/Mainlayout';
-import Login from '../Forms/Login';
-import Signup from '../Forms/Signup';
-import VerifyEmail from '../Forms/Verification'
-import ResetPassword from '../Forms/ResetPassword'
+import MainLayout from '../layouts/applayout/main/Mainlayout';
+import Login from '../forms/Login';
+import Signup from '../forms/Signup';
+import VerifyEmail from '../forms/Verification'
+import ResetPassword from '../forms/ResetPassword'
 
 const AllRoutes = () => {
   return (

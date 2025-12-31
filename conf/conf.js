@@ -7,11 +7,11 @@ const conf = {
 };
 
 export default conf;
-console.log("Appwrite URL:", import.meta.env.VITE_APPWRITE_URL);
+console.log("appwrite URL:", import.meta.env.VITE_APPWRITE_URL);
 console.log("Table URL:", import.meta.env.VITE_APPWRITE_TABLE_ID);
 console.log("Bucket URL:", import.meta.env.VITE_APPWRITE_BUCKET_ID);
 
-console.log("Appwrite Config:", {
+console.log("appwrite Config:", {
     url: conf.appwriteUrl,
     projectId: conf.appwriteProjectId,
     envVars: import.meta.env

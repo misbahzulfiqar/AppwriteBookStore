@@ -1,8 +1,8 @@
 // Create a new file: src/Pages/VerifyEmail.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import authService from '../Appwrite/Auth/authService';
-import Button from '../Components/button';
+import authService from '../appwrite/auth/authService';
+import Button from '../components/button';
 
 function VerifyEmail() {
   const [searchParams] = useSearchParams();

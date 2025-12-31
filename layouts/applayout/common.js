@@ -1,12 +1,12 @@
 // Common functions and data for all components
 
 export const bookImages = [
-  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-1.png",
-  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-2.png",
-  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-3.png",
-  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-4.png",
-  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-5.png",
-  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-6.png",
+  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-1.png",
+  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-2.png",
+  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-3.png",
+  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-4.png",
+  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-5.png",
+  "https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-6.png",
 ];
 
 export const featuredBooks = [

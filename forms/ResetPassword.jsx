@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import authService from '../Appwrite/Auth/authService';
-import Input from '../Components/input';
-import Button from '../Components/button';
+import authService from '../appwrite/auth/authService';
+import Input from '../components/input';
+import Button from '../components/button';
 
 function ResetPassword() {
     const [searchParams] = useSearchParams();

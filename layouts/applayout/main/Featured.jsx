@@ -46,7 +46,7 @@ const Featured = () => {
               <div className="image">
                 <a href="./product.html">
                   <img 
-                    src={`https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/book-${book.id}.png`} 
+                    src={`https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/book-${book.id}.png`} 
                     alt={book.title}
                   />
                 </a>

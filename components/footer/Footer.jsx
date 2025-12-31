@@ -1,5 +1,5 @@
 import React from 'react';
-import { footerLinks } from '../../Layouts/Applayout/common';
+import { footerLinks } from '../../layouts/applayout/common';
 
 const Footer = () => {
   return (
@@ -44,7 +44,7 @@ const Footer = () => {
             </a>
           ))}
           <img 
-            src="https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/worldmap.png" 
+            src="https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/worldmap.png" 
             className="map" 
             alt="World Map" 
           />

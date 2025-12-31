@@ -1,5 +1,5 @@
 import { Client, Account, ID } from "appwrite";
-import conf from "../../Conf/conf";
+import conf from "../../conf/conf";
 
 export class AuthService {
   client = new Client();
@@ -61,7 +61,7 @@ export class AuthService {
       if (err.code === 401) {
         throw new Error("You must be logged in to send verification email");
       } else if (err.code === 400) {
-        throw new Error("Invalid verification URL. Make sure domain is added to Appwrite console");
+        throw new Error("Invalid verification URL. Make sure domain is added to appwrite console");
       }
       
       throw err;

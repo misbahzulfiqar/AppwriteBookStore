@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import authService from '../Appwrite/Auth/authService';
-import Input from '../Components/input';
-import Button from '../Components/button';
+import authService from '../appwrite/auth/authService';
+import Input from '../components/input';
+import Button from '../components/button';
 
 function Signup() {
   const navigate = useNavigate();

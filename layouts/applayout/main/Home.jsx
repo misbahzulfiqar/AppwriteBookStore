@@ -45,7 +45,7 @@ const Home = () => {
             ))}
           </div>
           <img 
-            src="https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-Store-Website-/main/image/stand.png" 
+            src="https://raw.githubusercontent.com/KordePriyanka/Books4MU-Book-store-Website-/main/image/stand.png" 
             className="stand" 
             alt="Book Stand" 
           />
