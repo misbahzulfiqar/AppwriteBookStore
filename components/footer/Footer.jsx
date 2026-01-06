@@ -3,7 +3,7 @@ import { footerLinks } from '../../layouts/applayout/common';
 
 const Footer = () => {
   return (
-    <section className="footer">
+    <section className="footer" id='footer'>
       <div className="box-container">
         {/* Locations */}
         <div className="box">

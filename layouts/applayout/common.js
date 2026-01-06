@@ -61,13 +61,6 @@ export const reviews = [
   },
 ];
 
-export const iconsData = [
-  { id: 1, icon: "fas fa-shipping-fast", title: "free shipping", text: "order over $100" },
-  { id: 2, icon: "fas fa-lock", title: "secure payment", text: "100 secure payment" },
-  { id: 3, icon: "fas fa-redo-alt", title: "easy returns", text: "10 days returns" },
-  { id: 4, icon: "fas fa-headset", title: "24/7 support", text: "call us anytime" },
-];
-
 export const footerLinks = {
   locations: [
     { name: "Pakistan", icon: "fas fa-map-marker-alt" },

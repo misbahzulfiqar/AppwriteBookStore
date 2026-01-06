@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import authService from '../../appwrite/authService';
-import { logout as authLogout } from '../../store/authSlice';
+import authService from '../appwrite/auth/authService';
+import { logout as authLogout } from '../appwrite/auth/authSlice';
 
 function LogoutBtn() {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function LogoutBtn() {
 
   return (
     <button
-      className="inline-block px-6 py-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition duration-200"
+      className="bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors h-10 w-20 px-4"
       onClick={logoutHandler}
     >
       Logout

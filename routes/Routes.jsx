@@ -4,6 +4,7 @@ import Login from '../forms/Login';
 import Signup from '../forms/Signup';
 import VerifyEmail from '../forms/Verification'
 import ResetPassword from '../forms/ResetPassword'
+import Library from '../components/library/Library'
 
 const AllRoutes = () => {
   return (
@@ -12,7 +13,8 @@ const AllRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify" element={<VerifyEmail />} /> 
-      <Route path="/reset-password" element={<ResetPassword />} /> 
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/library" element={<Library />} />
     </Routes>
   );
 };

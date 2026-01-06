@@ -13,7 +13,7 @@ const Input = React.forwardRef(function Input({
     const inputType = type === "password" ? (showPassword ? "text" : "password") : type
 
     return (
-        <div className='w-full relative'>
+        <div className='w-full relative text-start'>
             {label && (
                 <label className='inline-block mb-1 pl-1' htmlFor={id}>
                     {label}

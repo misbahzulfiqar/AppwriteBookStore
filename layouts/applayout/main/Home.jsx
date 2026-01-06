@@ -26,7 +26,7 @@ const Home = () => {
   }, []);
 
   return (
-    <section className="home" id="home">
+    <section className="home" id="home" style={{paddingTop: '100px'}}>
       <div className="row">
         <div className="content">
           <h3>Memorable, Ties to Light</h3>

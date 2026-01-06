@@ -159,7 +159,7 @@ function Login() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-
+                backgroundColor: '#e9e2da'
             }}
         >
             {/* Blurred overlay */}
@@ -187,6 +187,7 @@ function Login() {
                     padding: '30px',
                     boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
                     textAlign: 'center',
+                    backgroundColor: 'White'
                 }}
             >
                 {!isForgotPassword ? (
