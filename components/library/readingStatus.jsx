@@ -15,8 +15,8 @@ function ReadingStats({ books = [] }) {
   ];
 
   return (
-    <div className="mb-8 p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">📊 Reading Statistics</h2>
+    <div className="mb-8 p-6 bg-white rounded-xl shadow-md margin">
+      <h2 className="text-2xl font-bold text-gray-800">📊 Reading Statistics</h2>
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((stat, index) => (

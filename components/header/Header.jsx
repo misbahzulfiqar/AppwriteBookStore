@@ -89,7 +89,7 @@ const Header = () => {
               <>
                 <Link
                   to="/library"
-                  className="bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors h-10 w-20 px-4"
+                  className="bg-[#a67c52] text-white rounded-sm cursor-pointer hover:bg-[#b28c65] transition-colors h-10 w-25 btn-margin text-center"
                 >
                   📚 Library
                 </Link>

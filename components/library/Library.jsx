@@ -1,42 +1,30 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import BookList from './bookList';
+import BookList from './BookList';
 import BookUploadForm from './BookUploadForm';
-import ReadingStats from './readingStatus';
+import ReadingStats from './ReadingStats';
 import { getUserBooks } from './bookSlice';
 
 function Library() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
   const { books = [], isLoading = false } = useSelector((state) => state.books || {});
-  const authStatus = useSelector((state) => state.auth.status);
-  const user = useSelector((state) => state.auth.userData);
 
-  // Redirect if not logged in
+  // Load books on component mount
   useEffect(() => {
-    if (!authStatus) {
-      navigate('/login');
-    }
-  }, [authStatus, navigate]);
+    dispatch(getUserBooks());
+  }, [dispatch]);
 
-  // Load books when user is available
-  useEffect(() => {
-    if (user) {
-      dispatch(getUserBooks(user.$id));
-    }
-  }, [dispatch, user]);
-
-  if (!authStatus) return null; // Will redirect
-
-  // Loading state
+  // Loading state for books
   if (isLoading && books.length === 0) {
     return (
-      <div className="library-page">
-        <div className="library-container">
-          <div className="loading-wrapper">
-            <div className="spinner"></div>
-            <p className="loading-text">Loading your library...</p>
+      <div className="min-h-screen bg-gradient-to-b from-[#f8f4f0] to-white py-8">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b5a2b] mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading your library...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -44,43 +32,84 @@ function Library() {
   }
 
   return (
-    <div className="library-page">
-      <div className="library-container">
+    <div className="min-h-screen">
+      <div className="inner-div space">
+        
         {/* Page Header */}
-        <div className="library-header">
-          <h1 className="library-title">📚 My Personal Library</h1>
-          <p className="library-subtitle text-3xl">
-            Manage your book collection, track reading progress, and discover new favorites.
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2 margin">📚 My Personal Library</h1>
+            <p className="text-gray-600 text-2xl margin">
+              Manage your book collection, track reading progress, and discover new favorites.
+            </p>
+          </div>
+          
+          {/* Add Book Button */}
+          <div>
+            <BookUploadForm />
+          </div>
         </div>
 
         {/* Statistics */}
-        {books.length > 0 && <ReadingStats books={books} />}
+        {books.length > 0 && (
+          <div className="mb-8">
+            <ReadingStats books={books} />
+          </div>
+        )}
 
-        {/* Add Book Form */}
-        <BookUploadForm />
-
-        {/* Book List */}
-        {books.length > 0 ? (
-          <BookList books={books} />
-        ) : (
-          // Empty State
-          <div className="empty-state-wrapper">
-            <div className="empty-state-box">
-              <div className="empty-icon">📖</div>
-              <h3 className="empty-title">Ready to start your reading journey?</h3>
-              <p className="empty-text">
-                Your personal library is waiting! Add books you want to read, track your progress, and celebrate your reading achievements.
+        {/* Book List Grid */}
+        <div className="mb-8">
+          {books.length > 0 ? (
+            <BookList books={books} />
+          ) : (
+            // Empty State
+            <div className="text-center py-12 bg-white rounded-2xl">
+              <div className="text-6xl mb-4">📖</div>
+              <h3 className="text-xl font-semibold text-gray-700 mb-3">Ready to start your reading journey?</h3>
+              <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                Your personal library is waiting! Upload PDF books, track your reading progress, 
+                and pick up right where you left off.
               </p>
-              <button
-                onClick={() => document.querySelector('button')?.click()}
-                className="empty-button"
-              >
-                Add Your First Book
-              </button>
+              <div className="mt-6">
+                <p className="text-sm text-gray-500 mb-4">
+                  Click "Add New Book" above to upload your first PDF!
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Quick Stats Bar - Only show if there are books */}
+        {books.length > 0 && (
+          <div className="bg-white rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Library Summary</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-4 bg-blue-50 rounded-lg">
+                <div className="text-2xl font-bold text-blue-700">{books.length}</div>
+                <div className="text-sm text-blue-600">Total Books</div>
+              </div>
+              <div className="text-center p-4 bg-green-50 rounded-lg">
+                <div className="text-2xl font-bold text-green-700">
+                  {books.filter(b => b.status === 'reading').length}
+                </div>
+                <div className="text-sm text-green-600">Currently Reading</div>
+              </div>
+              <div className="text-center p-4 bg-purple-50 rounded-lg">
+                <div className="text-2xl font-bold text-purple-700">
+                  {books.filter(b => b.status === 'finished').length}
+                </div>
+                <div className="text-sm text-purple-600">Finished</div>
+              </div>
+              <div className="text-center p-4 bg-yellow-50 rounded-lg">
+                <div className="text-2xl font-bold text-yellow-700">
+                  {books.filter(b => b.lastReadPage > 0).length}
+                </div>
+                <div className="text-sm text-yellow-600">Have Reading Progress</div>
+              </div>
             </div>
           </div>
         )}
+
       </div>
     </div>
   );

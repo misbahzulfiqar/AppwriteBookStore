@@ -5,6 +5,7 @@ import Signup from '../forms/Signup';
 import VerifyEmail from '../forms/Verification'
 import ResetPassword from '../forms/ResetPassword'
 import Library from '../components/library/Library'
+import PDFReaderPage from '../components/library/pdfReaderPage';
 
 const AllRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AllRoutes = () => {
       <Route path="/verify" element={<VerifyEmail />} /> 
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/library" element={<Library />} />
+      <Route path="/reader/:bookId" element={<PDFReaderPage />} />
     </Routes>
   );
 };

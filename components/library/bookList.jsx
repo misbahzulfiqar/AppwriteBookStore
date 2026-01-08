@@ -33,7 +33,7 @@ function BookList({ books = [] }) {
     <div className="bg-white rounded-xl shadow-lg p-6">
       {/* Header with search and filter */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h2 className="text-2xl font-bold text-gray-800">
+        <h2 className="text-2xl font-bold text-gray-800 margin mar-bottom">
           My Books ({books.length})
         </h2>
         
