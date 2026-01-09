@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import BookList from './BookList';
+import BookList from './bookList';
 import BookUploadForm from './BookUploadForm';
 import ReadingStats from './ReadingStats';
 import { getUserBooks } from './bookSlice';

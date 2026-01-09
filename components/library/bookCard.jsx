@@ -12,11 +12,61 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
   const [uploading, setUploading] = useState(false);
 
   const BUCKET_ID = '694cdba10015e74ddd56';
+  const PROJECT_ID = '694bc436001e80f4822d';
 
-  // Get cover image URL
-useEffect(() => {
-  setImageUrl(book.coverImageUrl || null);
-}, [book.coverImageUrl]);
+  // DEBUG: Log ALL book data
+  useEffect(() => {
+    console.log('📚 BookCard received FULL book data:', {
+      id: book?.$id,
+      title: book?.title,
+      author: book?.author,
+      coverImageId: book?.coverImageId,
+      ALL_FIELDS: book // This shows everything
+    });
+    
+    console.log('🔍 Checking for coverImageId in different places:');
+    console.log('book.coverImageId:', book?.coverImageId);
+    console.log('book.coverImageUrl:', book?.coverImageUrl);
+    console.log('book.featuredImage:', book?.featuredImage);
+    console.log('book.image:', book?.image);
+    console.log('book.cover:', book?.cover);
+  }, [book]);
+
+  // Generate image URL from coverImageId
+  useEffect(() => {
+    const generateImageUrl = () => {
+      if (book?.coverImageId) {
+        console.log('✅ Found coverImageId:', book.coverImageId);
+        
+        // Try multiple methods to get the URL
+        try {
+          const url = storage.getFileView(BUCKET_ID, book.coverImageId);
+          console.log('🔗 Generated URL via getFileView:', url);
+          setImageUrl(url);
+        } catch (viewError) {
+          console.log('⚠️ getFileView failed, trying getFilePreview...');
+          
+          try {
+            const previewUrl = storage.getFilePreview(BUCKET_ID, book.coverImageId);
+            console.log('🔗 Generated URL via getFilePreview:', previewUrl);
+            setImageUrl(previewUrl);
+          } catch (previewError) {
+            console.log('⚠️ getFilePreview failed, constructing manual URL...');
+            
+            const manualUrl = `https://nyc.cloud.appwrite.io/v1/storage/buckets/${BUCKET_ID}/files/${book.coverImageId}/view?project=${PROJECT_ID}`;
+            console.log('🔗 Using manual URL:', manualUrl);
+            setImageUrl(manualUrl);
+          }
+        }
+      } else {
+        console.log('❌ NO coverImageId found for book:', book?.title);
+        setImageUrl(null);
+      }
+    };
+
+    generateImageUrl();
+  }, [book?.coverImageId]);
+
   const progress = book.totalPages && book.pagesRead 
     ? Math.round((parseInt(book.pagesRead) / parseInt(book.totalPages)) * 100)
     : 0;
@@ -37,7 +87,7 @@ useEffect(() => {
     return [...Array(5)].map((_, i) => (
       <span 
         key={i} 
-        className={`text-sm ${i < book.rating ? 'text-yellow-500' : 'text-gray-300'}`}
+        className={`text-2xl ${i < book.rating ? 'text-yellow-500' : 'text-gray-300'}`}
       >
         ★
       </span>
@@ -110,38 +160,29 @@ useEffect(() => {
     }
   };
 
+  useEffect(() => {
+    console.log('BookCard rendered for book:', book);
+  }, []);
+
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-1">
       <div 
-        className="h-48 relative cursor-pointer overflow-hidden group"
+        className="h-74 relative cursor-pointer overflow-hidden group"
         onClick={handleReadClick}
       >
-        {imageUrl ? (
-          <img 
-            src={imageUrl} 
-            alt={`Cover of ${book.title}`}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="h-full bg-gradient-to-br from-[#8b5a2b] to-[#a67c52] flex flex-col items-center justify-center text-white">
-            <div className="text-4xl mb-2">📚</div>
-            <div className="text-center px-4">
-              <div className="font-bold text-lg truncate">{book.title}</div>
-              <div className="text-sm opacity-90">{book.author}</div>
-              <div className="mt-2 text-xs bg-black/30 px-2 py-1 rounded">
-                {isEditable ? 'Click to add cover' : 'No cover'}
-              </div>
-            </div>
-          </div>
-        )}
+        <img 
+          src={imageUrl} 
+          alt={`Cover of ${book.title}`}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
         
         {isEditable && (
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
             <label 
-              className={`px-4 py-2 bg-white text-gray-800 rounded-lg cursor-pointer font-medium shadow-lg ${uploading ? 'opacity-50' : 'hover:bg-gray-100 hover:scale-105'}`}
+              className={`px-6 py-3 bg-white text-gray-800 rounded-xl cursor-pointer font-semibold shadow-xl transition-all ${uploading ? 'opacity-50' : 'hover:bg-gray-100 hover:scale-110'}`}
               htmlFor={`cover-upload-${book.$id}`}
             >
-              {uploading ? 'Uploading...' : imageUrl ? 'Change Cover' : 'Add Cover'}
+              {uploading ? 'Uploading...' : 'Change Cover'}
             </label>
             <input
               type="file"
@@ -154,14 +195,14 @@ useEffect(() => {
           </div>
         )}
         
-        <div className="absolute top-3 left-3">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[book.status]} backdrop-blur-sm bg-white/70 shadow-sm`}>
+        <div className="absolute top-4 left-4">
+          <span className={`px-4 py-2 rounded-full text-xl ${statusColors[book.status]} backdrop-blur-sm bg-white/80 shadow-lg ex-adding`}>
             {statusText[book.status]}
           </span>
         </div>
 
         {book.rating > 0 && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded shadow-sm">
+          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-xl shadow-lg">
             <div className="flex items-center gap-1">
               {renderStars()}
             </div>
@@ -169,31 +210,31 @@ useEffect(() => {
         )}
       </div>
 
-      <div className="p-4">
+      <div className="p-6 space-y-4">
         <h3 
-          className="font-bold text-lg text-gray-800 truncate cursor-pointer hover:text-[#8b5a2b]"
+          className="font-bold text-xl text-gray-900 truncate cursor-pointer hover:text-[#8b5a2b] transition-colors"
           onClick={handleReadClick}
           title={book.title}
         >
           {book.title}
         </h3>
-        <p className="text-gray-600 text-sm mb-2">by {book.author}</p>
+        <p className="text-gray-700 text-base mb-2 font-medium">by {book.author}</p>
 
         {book.description && (
-          <p className="text-gray-700 text-sm mb-3 line-clamp-2">
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2 bg-gray-50 p-3 rounded-lg">
             {book.description}
           </p>
         )}
 
         {book.status === 'reading' && book.totalPages && (
-          <div className="mb-3">
-            <div className="flex justify-between text-xs text-gray-600 mb-1">
+          <div className="mb-5 bg-gray-50 p-4 rounded-xl">
+            <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
               <span>Progress: {book.pagesRead || 0}/{book.totalPages} pages</span>
-              <span>{progress}%</span>
+              <span className="font-bold">{progress}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-300 rounded-full h-3">
               <div 
-                className="bg-[#8b5a2b] h-2 rounded-full"
+                className="bg-gradient-to-r from-[#8b5a2b] to-[#a67c52] h-3 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
@@ -201,59 +242,60 @@ useEffect(() => {
         )}
 
         {book.lastReadPage > 0 && (
-          <div className="mb-3">
+          <div className="mb-4">
             <button
               onClick={handleReadClick}
-              className="w-full px-3 py-2 bg-[#8b5a2b] hover:bg-[#a67c52] text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
+              className="w-full px-5 py-4 bg-gradient-to-r from-[#8b5a2b] to-[#a67c52] hover:from-[#a67c52] hover:to-[#8b5a2b] text-white text-base font-bold rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg"
             >
-              <span>▶️</span>
+              <span className="text-xl">▶️</span>
               Resume from Page {book.lastReadPage}
             </button>
           </div>
         )}
 
-        <div className="flex justify-between text-sm text-gray-500 mb-4">
-          <div>
+        <div className="flex justify-between items-center text-base text-gray-700 mb-6 bg-gray-50 p-3 rounded-xl">
+          <div className="font-semibold">
             {book.totalPages ? `${book.totalPages} pages` : 'Unknown pages'}
           </div>
           {book.rating > 0 && (
-            <div>
-              {book.rating}/5 ★
+            <div className="flex items-center gap-2 font-bold">
+              <span>{book.rating}/5</span>
+              <span className="text-yellow-500">★</span>
             </div>
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-3">
           <button
             onClick={handleReadClick}
-            className="flex-1 min-w-[120px] px-3 py-2 bg-[#8b5a2b] hover:bg-[#a67c52] text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
+            className="w-full px-5 py-4 bg-gradient-to-r from-[#8b5a2b] to-[#a67c52] hover:from-[#a67c52] hover:to-[#8b5a2b] text-white text-base font-bold rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg"
           >
-            <span>📖</span>
-            {book.lastReadPage > 0 ? 'Continue Reading' : 'Read Now'}
+            <span className="text-2xl">📖</span>
+            {book.lastReadPage > 0 ? 'Continue Reading' : 'Start Reading'}
           </button>
           
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {book.status !== 'reading' && (
               <button
                 onClick={() => handleStatusChange('reading')}
-                className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg"
+                className="flex-1 px-5 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-base font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
               >
-                Start
+                Start Reading
               </button>
             )}
             
             {book.status !== 'finished' && (
               <button
                 onClick={() => handleStatusChange('finished')}
-                className="px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg"
+                className="flex-1 px-5 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-base font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
               >
-                Done
+                Mark as Done
               </button>
             )}
 
             <button
               onClick={handleDelete}
-              className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg"
+              className="px-5 py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-base font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
               title="Delete Book"
             >
               🗑️

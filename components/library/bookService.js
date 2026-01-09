@@ -503,7 +503,9 @@ class BookService {
     const pdfFileId = await this.uploadFile(pdfFile);
     let coverImageId = null;
 
-    if (coverFile) {
+    if(bookData.coverImageId) {
+      coverImageId = bookData.coverImageId;
+    }else if (coverFile) {
       coverImageId = await this.uploadFile(coverFile);
     }
 
