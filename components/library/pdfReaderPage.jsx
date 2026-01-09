@@ -239,14 +239,14 @@ function PDFReaderPage() {
   }
   
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div>
       {/* Header */}
-      <div className="bg-white shadow-lg px-6 py-4 sticky top-0 z-10">
+      <div className="bg-white shadow-lg px-6 py-4 sticky top-0 z-10 margin div-padding">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/library')}
-              className="px-4 py-2 bg-[#8b5a2b] hover:bg-[#a67c52] text-white rounded-lg transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-[#8b5a2b] hover:bg-[#a67c52] text-white rounded-lg transition-colors flex items-center gap-2 h-15 back-btn"
             >
               <span>←</span> Back to Library
             </button>
@@ -279,7 +279,7 @@ function PDFReaderPage() {
       </div>
       
       {/* PDF Viewer */}
-      <div className="p-4">
+      <div className="pdfs-div">
         <div className="border rounded-lg overflow-hidden shadow-2xl bg-white">
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
             <div

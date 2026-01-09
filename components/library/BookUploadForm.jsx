@@ -100,16 +100,20 @@ function BookUploadForm() {
     }
 
     try {
-      const bookData = {
-        title: formData.title.trim(),
-        author: formData.author.trim(),
-        description: (formData.description || '').trim(),
-        status: formData.status,
-        pagesRead: formData.pagesRead ? parseInt(formData.pagesRead) : 0,
-        totalPages: formData.totalPages ? parseInt(formData.totalPages) : 0,
-        rating: parseInt(formData.rating) || 0,
-        coverImageId: formData.coverImageId || null,
-      };
+const bookData = {
+  title: formData.title.trim(),
+  author: formData.author.trim(),
+  description: formData.description ? formData.description.trim() : '',
+  status: formData.status,
+  pagesRead: formData.pagesRead ? parseInt(formData.pagesRead) : 0,
+  totalPages: formData.totalPages ? parseInt(formData.totalPages) : 0,
+  rating: formData.rating ? parseInt(formData.rating) : 0,
+  coverImageId: formData.coverImageId || null,
+  isPublic: formData.isPublic || false,
+};
+
+console.log("Sending to Appwrite:", bookData);
+
 
       console.log('Submitting book:', { 
         bookData, 

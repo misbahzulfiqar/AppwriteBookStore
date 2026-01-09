@@ -308,10 +308,9 @@ class BookService {
       pdfFileId,
       coverImageId,
       lastReadPage: 0,
-      isPublic: bookData.isPublic !== undefined ? Boolean(bookData.isPublic) : true, // Default to public
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      isPublic: bookData.isPublic !== undefined ? Boolean(bookData.isPublic) : true,
     };
+
 
     const newBook = await this.databases.createDocument(
       this.databaseId,
