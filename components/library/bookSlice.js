@@ -94,7 +94,38 @@ export const updateBookCover = createAsyncThunk(
       return thunkAPI.rejectWithValue(err.message);
     }
   }
+  
 );
+
+// In your bookSlice.js
+export const fetchPublicBooks = createAsyncThunk(
+  'books/fetchPublicBooks',
+  async () => {
+    // Query ALL books without user filter
+    const response = await databases.listDocuments(
+      'your-database-id',
+      'books-collection-id',
+      [] // No queries = get ALL books
+    );
+    return response.documents;
+  }
+);
+
+// Add to your slice
+extraReducers: (builder) => {
+  builder
+    .addCase(fetchPublicBooks.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(fetchPublicBooks.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.publicBooks = action.payload; // Store in separate array
+    })
+    .addCase(fetchPublicBooks.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    });
+}
 
 /* =======================
    Slice
@@ -313,3 +344,4 @@ export const selectOperationStatus = (operation) => (state) =>
   state.books.operationStatus[operation];
 
 export default bookSlice.reducer;
+

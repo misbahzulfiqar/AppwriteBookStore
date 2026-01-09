@@ -81,30 +81,30 @@ function Library() {
 
         {/* Quick Stats Bar - Only show if there are books */}
         {books.length > 0 && (
-          <div className="bg-white rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Library Summary</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-700">{books.length}</div>
-                <div className="text-sm text-blue-600">Total Books</div>
+          <div className="bg-white rounded-xl p-6 lib-summary">
+            <h3 className="text-3xl font-semibold text-gray-800 mb-4 margin">Library Summary</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 margin">
+              <div className="text-center p-4 bg-blue-100 rounded-lg h-40">
+                <div className="text-5xl font-bold text-blue-700 margin-sp">{books.length}</div>
+                <div className="text-xl text-blue-600">Total Books</div>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-700">
+              <div className="text-center p-4 bg-green-100 rounded-lg">
+                <div className="text-5xl font-bold text-green-700 margin-sp">
                   {books.filter(b => b.status === 'reading').length}
                 </div>
-                <div className="text-sm text-green-600">Currently Reading</div>
+                <div className="text-xl text-green-600">Currently Reading</div>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="text-2xl font-bold text-purple-700">
+              <div className="text-center p-4 bg-purple-100 rounded-lg">
+                <div className="text-5xl font-bold text-purple-700 margin-sp">
                   {books.filter(b => b.status === 'finished').length}
                 </div>
-                <div className="text-sm text-purple-600">Finished</div>
+                <div className="text-xl text-purple-600">Finished</div>
               </div>
-              <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                <div className="text-2xl font-bold text-yellow-700">
+              <div className="text-center p-4 bg-yellow-100 rounded-lg">
+                <div className="text-5xl font-bold text-yellow-700 margin-sp">
                   {books.filter(b => b.lastReadPage > 0).length}
                 </div>
-                <div className="text-sm text-yellow-600">Have Reading Progress</div>
+                <div className="text-xl text-yellow-600">Have Reading Progress</div>
               </div>
             </div>
           </div>

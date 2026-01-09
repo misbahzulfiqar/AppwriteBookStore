@@ -305,5 +305,26 @@
 }
 
 .ex-adding{
+  padding: 3px;
+}
+.upload-btn{
+  height: 20px !important;
+}
+.div-padding{
+  padding: 12px;
+}
+
+.lib-summary{
+  margin-top: 30px;
+}
+.heights button{
+  height: 35px;
+}
+.text-centerr{
+  padding-top: 35px;
+  border: 1px solid gray;
+}
+.margin input, textarea{
+  background-color: rgb(239, 243, 246);
   padding: 5px;
 }

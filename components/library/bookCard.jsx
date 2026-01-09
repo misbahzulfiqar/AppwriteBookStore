@@ -166,20 +166,20 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-200 transform hover:-translate-y-1">
-      <div 
-        className="h-74 relative cursor-pointer overflow-hidden group"
-        onClick={handleReadClick}
-      >
+      {/* REMOVED: The onClick from the entire image container */}
+      <div className="h-74 relative overflow-hidden group">
         <img 
           src={imageUrl} 
           alt={`Cover of ${book.title}`}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          // Removed pointer cursor and onClick from the image
         />
         
+        {/* KEPT: File upload input - but it's hidden */}
         {isEditable && (
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+          <div className="absolute bottom-4 right-4">
             <label 
-              className={`px-6 py-3 bg-white text-gray-800 rounded-xl cursor-pointer font-semibold shadow-xl transition-all ${uploading ? 'opacity-50' : 'hover:bg-gray-100 hover:scale-110'}`}
+              className= "bg-white text-gray-800 rounded-md h-30 not-even:cursor-pointer font-medium shadow-lg transition-all ${uploading ? 'opacity-50' : 'hover:bg-gray-100 hover:scale-105"
               htmlFor={`cover-upload-${book.$id}`}
             >
               {uploading ? 'Uploading...' : 'Change Cover'}
@@ -195,7 +195,7 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
           </div>
         )}
         
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-6 left-4">
           <span className={`px-4 py-2 rounded-full text-xl ${statusColors[book.status]} backdrop-blur-sm bg-white/80 shadow-lg ex-adding`}>
             {statusText[book.status]}
           </span>
@@ -210,15 +210,15 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
         )}
       </div>
 
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 div-padding">
         <h3 
-          className="font-bold text-xl text-gray-900 truncate cursor-pointer hover:text-[#8b5a2b] transition-colors"
+          className="font-bold text-3xl text-gray-900 truncate cursor-pointer hover:text-[#8b5a2b] transition-colors"
           onClick={handleReadClick}
           title={book.title}
         >
           {book.title}
         </h3>
-        <p className="text-gray-700 text-base mb-2 font-medium">by {book.author}</p>
+        <p className="text-gray-700 text-xl mb-2 font-medium margin">by {book.author}</p>
 
         {book.description && (
           <p className="text-gray-600 text-sm mb-4 line-clamp-2 bg-gray-50 p-3 rounded-lg">
@@ -227,10 +227,10 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
         )}
 
         {book.status === 'reading' && book.totalPages && (
-          <div className="mb-5 bg-gray-50 p-4 rounded-xl">
+          <div className="mb-5 bg-gray-50 p-4 rounded-xl margin">
             <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
               <span>Progress: {book.pagesRead || 0}/{book.totalPages} pages</span>
-              <span className="font-bold">{progress}%</span>
+              <span className="font-bold margin">{progress}%</span>
             </div>
             <div className="w-full bg-gray-300 rounded-full h-3">
               <div 
@@ -253,7 +253,7 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
           </div>
         )}
 
-        <div className="flex justify-between items-center text-base text-gray-700 mb-6 bg-gray-50 p-3 rounded-xl">
+        <div className="flex justify-between items-center text-base text-gray-700 mb-6 bg-gray-50 p-3 rounded-xl margin">
           <div className="font-semibold">
             {book.totalPages ? `${book.totalPages} pages` : 'Unknown pages'}
           </div>
@@ -265,42 +265,39 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
           )}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-row gap-3 margin justify-between heights">
           <button
             onClick={handleReadClick}
-            className="w-full px-5 py-4 bg-gradient-to-r from-[#8b5a2b] to-[#a67c52] hover:from-[#a67c52] hover:to-[#8b5a2b] text-white text-base font-bold rounded-xl flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg"
+            className="flex-1 px-5 py-4 bg-[#bd926a] hover:to-[#8b5a2b] text-white text-base font-bold rounded-md flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] shadow-lg"
           >
-            <span className="text-2xl">📖</span>
             {book.lastReadPage > 0 ? 'Continue Reading' : 'Start Reading'}
           </button>
           
-          <div className="flex gap-3">
-            {book.status !== 'reading' && (
-              <button
-                onClick={() => handleStatusChange('reading')}
-                className="flex-1 px-5 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-base font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
-              >
-                Start Reading
-              </button>
-            )}
-            
-            {book.status !== 'finished' && (
-              <button
-                onClick={() => handleStatusChange('finished')}
-                className="flex-1 px-5 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-base font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
-              >
-                Mark as Done
-              </button>
-            )}
-
+          {book.status !== 'reading' && (
             <button
-              onClick={handleDelete}
-              className="px-5 py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-base font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
-              title="Delete Book"
+              onClick={() => handleStatusChange('reading')}
+              className="flex-1 px-5 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-base font-bold rounded-md transition-all transform hover:scale-[1.02] shadow-lg h-10 flex items-center justify-center"
             >
-              🗑️
+              Start Reading
             </button>
-          </div>
+          )}
+          
+          {book.status !== 'finished' && (
+            <button
+              onClick={() => handleStatusChange('finished')}
+              className="flex-1 px-5 py-4 bg-[#7cc96b] hover:from-green-600 hover:to-green-700 text-white text-base font-bold rounded-md transition-all transform hover:scale-[1.02] shadow-lg h-10 flex items-center justify-center"
+            >
+              Mark as Done
+            </button>
+          )}
+
+          <button
+            onClick={handleDelete}
+            className="flex-1 px-5 py-4 bg-[#e97373] hover:from-red-600 hover:to-red-700 text-white text-base font-bold rounded-md transition-all transform hover:scale-[1.02] shadow-lg h-10 flex items-center justify-center"
+            title="Delete Book"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
