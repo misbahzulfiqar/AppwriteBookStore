@@ -5,7 +5,6 @@ import bookService from './bookService';
    Async Thunks
 ======================= */
 
-// Fetch books of current user
 export const getUserBooks = createAsyncThunk(
   'books/getUserBooks',
   async (_, thunkAPI) => {
@@ -17,12 +16,10 @@ export const getUserBooks = createAsyncThunk(
   }
 );
 
-// Create a new book with PDF and optional cover image
 export const createBook = createAsyncThunk(
   'books/createBook',
   async ({ bookData, pdfFile, coverFile }, thunkAPI) => {
     try {
-      // BookService now handles userId internally from Appwrite session
       return await bookService.createBook(bookData, pdfFile, coverFile);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
@@ -30,46 +27,41 @@ export const createBook = createAsyncThunk(
   }
 );
 
-// Update a book (for status changes, progress, cover image, etc.)
+// ⚠️ FIXED: Remove coverFile parameter
 export const updateBook = createAsyncThunk(
   'books/updateBook',
-  async ({ bookId, updates, coverFile }, thunkAPI) => {
+  async ({ bookId, updates }, thunkAPI) => { // Only 2 parameters
     try {
-      return await bookService.updateBook(bookId, updates, coverFile);
+      return await bookService.updateBook(bookId, updates);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
-// Upload cover image separately (for BookCard component)
+// ⚠️ FIXED: Use correct service method
 export const uploadCoverImage = createAsyncThunk(
   'books/uploadCoverImage',
   async ({ bookId, coverFile }, thunkAPI) => {
     try {
-      return await bookService.uploadCoverImage(bookId, coverFile);
+      return await bookService.updateCoverImage(bookId, coverFile);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
-// Update reading progress (for PDF reader)
 export const updateReadingProgress = createAsyncThunk(
   'books/updateReadingProgress',
   async ({ bookId, lastReadPage }, thunkAPI) => {
     try {
-      return await bookService.updateBook(bookId, {
-        lastReadPage,
-        lastReadAt: new Date().toISOString()
-      });
+      return await bookService.updateReadingProgress(bookId, lastReadPage);
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
 
-// Delete a book and its associated files
 export const deleteBook = createAsyncThunk(
   'books/deleteBook',
   async (bookId, thunkAPI) => {
@@ -82,7 +74,6 @@ export const deleteBook = createAsyncThunk(
   }
 );
 
-// Update book cover image only
 export const updateBookCover = createAsyncThunk(
   'books/updateBookCover',
   async ({ bookId, coverImageId }, thunkAPI) => {
@@ -94,38 +85,18 @@ export const updateBookCover = createAsyncThunk(
       return thunkAPI.rejectWithValue(err.message);
     }
   }
-  
 );
 
-// In your bookSlice.js
 export const fetchPublicBooks = createAsyncThunk(
   'books/fetchPublicBooks',
-  async () => {
-    // Query ALL books without user filter
-    const response = await databases.listDocuments(
-      'your-database-id',
-      'books-collection-id',
-      [] // No queries = get ALL books
-    );
-    return response.documents;
+  async (_, thunkAPI) => {
+    try {
+      return await bookService.getPublicBooks();
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
   }
 );
-
-// Add to your slice
-extraReducers: (builder) => {
-  builder
-    .addCase(fetchPublicBooks.pending, (state) => {
-      state.isLoading = true;
-    })
-    .addCase(fetchPublicBooks.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.publicBooks = action.payload; // Store in separate array
-    })
-    .addCase(fetchPublicBooks.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error.message;
-    });
-}
 
 /* =======================
    Slice
@@ -133,12 +104,13 @@ extraReducers: (builder) => {
 
 const initialState = {
   books: [],
+  publicBooks: [], // Added for public books
   isLoading: false,
   isUploadingCover: false,
   error: null,
   currentReadingBook: null,
   coverUploadProgress: 0,
-  operationStatus: { // Track success/failure of operations
+  operationStatus: {
     create: null,
     update: null,
     delete: null,
@@ -167,7 +139,7 @@ const bookSlice = createSlice({
       state.currentReadingBook = null;
     },
     clearOperationStatus: (state, action) => {
-      const operation = action.payload; // 'create', 'update', 'delete', 'uploadCover'
+      const operation = action.payload;
       if (operation) {
         state.operationStatus[operation] = null;
       } else {
@@ -182,7 +154,6 @@ const bookSlice = createSlice({
     setCoverUploadProgress: (state, action) => {
       state.coverUploadProgress = action.payload;
     },
-    // Manually update a book (for optimistic updates)
     manualUpdateBook: (state, action) => {
       const { bookId, updates } = action.payload;
       const index = state.books.findIndex(book => book.$id === bookId);
@@ -193,7 +164,6 @@ const bookSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      /* Get Books */
       .addCase(getUserBooks.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -209,7 +179,6 @@ const bookSlice = createSlice({
         state.operationStatus.create = 'error';
       })
 
-      /* Create Book */
       .addCase(createBook.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -226,7 +195,6 @@ const bookSlice = createSlice({
         state.operationStatus.create = 'error';
       })
 
-      /* Update Book */
       .addCase(updateBook.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -245,7 +213,6 @@ const bookSlice = createSlice({
         state.operationStatus.update = 'error';
       })
 
-      /* Upload Cover Image */
       .addCase(uploadCoverImage.pending, (state) => {
         state.isUploadingCover = true;
         state.coverUploadProgress = 0;
@@ -254,7 +221,6 @@ const bookSlice = createSlice({
       .addCase(uploadCoverImage.fulfilled, (state, action) => {
         state.isUploadingCover = false;
         state.coverUploadProgress = 100;
-        // Update the book with new coverImageId
         const updatedBook = action.payload;
         state.books = state.books.map((book) =>
           book.$id === updatedBook.$id ? updatedBook : book
@@ -268,7 +234,6 @@ const bookSlice = createSlice({
         state.operationStatus.uploadCover = 'error';
       })
 
-      /* Update Book Cover Only */
       .addCase(updateBookCover.pending, (state) => {
         state.isLoading = true;
         state.operationStatus.uploadCover = 'pending';
@@ -286,7 +251,6 @@ const bookSlice = createSlice({
         state.operationStatus.uploadCover = 'error';
       })
 
-      /* Update Reading Progress */
       .addCase(updateReadingProgress.pending, (state) => {
         state.isLoading = true;
       })
@@ -301,7 +265,6 @@ const bookSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* Delete Book */
       .addCase(deleteBook.pending, (state) => {
         state.isLoading = true;
         state.operationStatus.delete = 'pending';
@@ -317,6 +280,18 @@ const bookSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         state.operationStatus.delete = 'error';
+      })
+
+      .addCase(fetchPublicBooks.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPublicBooks.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.publicBooks = action.payload.documents || action.payload;
+      })
+      .addCase(fetchPublicBooks.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       });
   },
 });
@@ -335,6 +310,7 @@ export const {
 } = bookSlice.actions;
 
 export const selectAllBooks = (state) => state.books.books;
+export const selectPublicBooks = (state) => state.books.publicBooks;
 export const selectBookById = (id) => (state) => 
   state.books.books.find(book => book.$id === id);
 export const selectBooksByStatus = (status) => (state) => 
@@ -344,4 +320,3 @@ export const selectOperationStatus = (operation) => (state) =>
   state.books.operationStatus[operation];
 
 export default bookSlice.reducer;
-
