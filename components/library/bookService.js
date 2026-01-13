@@ -16,10 +16,6 @@ class BookService {
     this.bucketId = conf.appwriteBucketId;
   }
 
-  /* =========================
-     HELPERS
-  ========================= */
-
   getCoverImageUrl(fileId) {
     if (!fileId) return null;
 
@@ -76,9 +72,48 @@ class BookService {
     return this.uploadFile(file, 'pdf');
   }
 
-  async uploadCoverImage(file) {
-    return this.uploadFile(file, 'image');
+async getPublicBooks() {
+  try {
+    console.log('🔄 Fetching public books...');
+    
+    const response = await this.databases.listDocuments(
+      this.databaseId,
+      this.collectionId,
+      [
+        Query.equal('isPublic', true)
+      ]
+    );
+
+    console.log('📊 Public books raw response:', {
+      total: response.total,
+      documentsCount: response.documents?.length || 0
+    });
+
+    // Add URLs to each book
+    const booksWithUrls = (response.documents || []).map(book => 
+      this.addUrlsToBook(book)
+    );
+
+    console.log('✅ Books with URLs:', booksWithUrls.length);
+    
+    if (booksWithUrls.length > 0) {
+      console.log('Sample book after URL addition:', {
+        id: booksWithUrls[0].$id,
+        title: booksWithUrls[0].title,
+        coverImageUrl: booksWithUrls[0].coverImageUrl,
+        pdfUrl: booksWithUrls[0].pdfUrl
+      });
+    }
+
+    return {
+      ...response,
+      documents: booksWithUrls
+    };
+  } catch (error) {
+    console.error('❌ Get public books error:', error);
+    throw error;
   }
+}
 
   /* =========================
      PUBLIC BOOK METHODS
@@ -219,15 +254,43 @@ class BookService {
      ADDITIONAL METHODS
   ========================= */
 
-  async getBookById(bookId) {
-    const book = await this.databases.getDocument(
-      this.databaseId,
-      this.collectionId,
-      bookId
-    );
-
-    return this.addUrlsToBook(book);
+  async getBookById(bookId, forcePublic = false) {
+  try {
+    console.log('🔍 Fetching book by ID:', bookId, 'forcePublic:', forcePublic);
+    
+    if (forcePublic) {
+      const endpoint = `https://nyc.cloud.appwrite.io/v1/databases/${this.databaseId}/collections/${this.collectionId}/documents/${bookId}`;
+      
+      const response = await fetch(endpoint, {
+        headers: {
+          'X-Appwrite-Project': this.client.config.project,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: Book not found or not public`);
+      }
+      
+      const book = await response.json();
+      return this.addUrlsToBook(book);
+    } else {
+      // Normal authenticated fetch
+      const book = await this.databases.getDocument(
+        this.databaseId,
+        this.collectionId,
+        bookId
+      );
+      
+      console.log('✅ Book fetched:', book.title);
+      return this.addUrlsToBook(book);
+    }
+    
+  } catch (error) {
+    console.error('❌ getBookById error:', error.message);
+    throw error;
   }
+}
 
   async toggleBookVisibility(bookId, makePublic) {
     return this.updateBook(bookId, {

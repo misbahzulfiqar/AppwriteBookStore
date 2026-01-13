@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { databases, Query } from '../../appwrite/auth/Client'; // adjust path
 import BookList from './bookList';
-
-const DATABASE_ID = '695cde3a000e703c00a8';
-const COLLECTION_ID = '694cdba10015e74ddd57';
+import bookService from './bookService';
 
 const PublicBookListWrapper = () => {
   const [books, setBooks] = useState([]);
@@ -12,18 +9,27 @@ const PublicBookListWrapper = () => {
   useEffect(() => {
     const fetchPublicBooks = async () => {
       try {
-        const response = await databases.listDocuments(
-          DATABASE_ID,
-          COLLECTION_ID,
-          [
-            Query.equal('isPublic', true)
-          ]
-        );
-        console.log("PUBLIC BOOKS RESPONSE:", response);
-        console.log("DOCUMENTS:", response.documents);
-        console.log("ALL BOOKS:", response.documents);
-
-        setBooks(response.documents);
+        // Use bookService which adds URLs to books
+        const response = await bookService.getPublicBooks();
+        
+        console.log("PUBLIC BOOKS WITH URLS:", response);
+        console.log("DOCUMENTS COUNT:", response.documents?.length || 0);
+        
+        // Check if books have coverImageUrl
+        if (response.documents && response.documents.length > 0) {
+          const firstBook = response.documents[0];
+          console.log("FIRST BOOK DATA:", {
+            id: firstBook.$id,
+            title: firstBook.title,
+            coverImageId: firstBook.coverImageId,
+            coverImageUrl: firstBook.coverImageUrl, // This should exist
+            pdfFileId: firstBook.pdfFileId,
+            pdfUrl: firstBook.pdfUrl // This should exist
+          });
+        }
+        
+        // Pass the documents array (with URLs) to BookList
+        setBooks(response.documents || []);
       } catch (error) {
         console.error('Failed to fetch public books:', error);
       } finally {
@@ -36,6 +42,15 @@ const PublicBookListWrapper = () => {
 
   if (loading) {
     return <div className="text-center py-10">Loading books...</div>;
+  }
+
+  if (books.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <h2 className="text-2xl font-bold text-gray-700 mb-4">No public books available</h2>
+        <p className="text-gray-600">Check if books have "isPublic: true" in database</p>
+      </div>
+    );
   }
 
   return <BookList books={books} />;
