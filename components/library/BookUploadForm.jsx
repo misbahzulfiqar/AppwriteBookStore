@@ -37,46 +37,31 @@ function BookUploadForm() {
     setSubmitError('');
   };
 
-  const handleCoverUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file (JPG, PNG, GIF, WebP)');
-      return;
-    }
-    
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Image size should be less than 5MB');
-      return;
-    }
-    
-    setUploadingCover(true);
-    
-    try {
-      const previewUrl = URL.createObjectURL(file);
-      setCoverPreview(previewUrl);
-      
-      const fileId = ID.unique();
-      await storage.createFile(BUCKET_ID, fileId, file);
-      
-      setFormData(prev => ({
-        ...prev,
-        coverImageId: fileId
-      }));
-      
-      setCoverImageFile(file);
-      
-      console.log('Cover uploaded successfully. File ID:', fileId);
-    } catch (error) {
-      console.error('Cover upload error:', error);
-      alert('Failed to upload cover image: ' + error.message);
-      setCoverPreview(null);
-      setCoverImageFile(null);
-    } finally {
-      setUploadingCover(false);
-    }
-  };
+const handleCoverUpload = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    alert('Please select an image file (JPG, PNG, GIF, WebP)');
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Image size should be less than 5MB');
+    return;
+  }
+
+  // Show preview in the browser
+  const previewUrl = URL.createObjectURL(file);
+  setCoverPreview(previewUrl);
+
+  // Store the file in state, but DO NOT upload yet
+  setCoverImageFile(file);
+
+  // Clear previous coverImageId in formData
+  setFormData(prev => ({ ...prev, coverImageId: '' }));
+};
+
 
   const handlePdfChange = (e) => {
     if (e.target.files[0]?.type === 'application/pdf') {
@@ -99,20 +84,30 @@ function BookUploadForm() {
       return;
     }
 
-    try {
-const bookData = {
-  title: formData.title.trim(),
-  author: formData.author.trim(),
-  description: formData.description ? formData.description.trim() : '',
-  status: formData.status,
-  pagesRead: formData.pagesRead ? parseInt(formData.pagesRead) : 0,
-  totalPages: formData.totalPages ? parseInt(formData.totalPages) : 0,
-  rating: formData.rating ? parseInt(formData.rating) : 0,
-  coverImageId: formData.coverImageId || null,
-  isPublic: formData.isPublic || false,
-};
+    let coverImageId = null;
 
-console.log("Sending to Appwrite:", bookData);
+      if (coverImageFile) {
+        const fileId = ID.unique();
+        const uploadedCover = await storage.createFile(BUCKET_ID, fileId, coverImageFile);
+        coverImageId = uploadedCover.$id;
+      }
+
+
+          try {
+    const bookData = {
+      title: formData.title.trim(),
+      author: formData.author.trim(),
+      description: formData.description ? formData.description.trim() : '',
+      status: formData.status,
+      pagesRead: formData.pagesRead ? parseInt(formData.pagesRead) : 0,
+      totalPages: formData.totalPages ? parseInt(formData.totalPages) : 0,
+      rating: formData.rating ? parseInt(formData.rating) : 0,
+      coverImageId: coverImageId, // <- uploaded on submit
+      isPublic: formData.isPublic || false,
+    };
+
+
+      console.log("Sending to Appwrite:", bookData);
 
 
       console.log('Submitting book:', { 

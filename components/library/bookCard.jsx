@@ -275,10 +275,10 @@ function BookCard({ book, onCoverUpdate, isEditable = false }) {
           
           {book.status !== 'reading' && (
             <button
-              onClick={() => handleStatusChange('reading')}
+              onClick={handleReadClick}
               className="flex-1 px-5 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-base font-bold rounded-md transition-all transform hover:scale-[1.02] shadow-lg h-10 flex items-center justify-center"
             >
-              Again Reading
+              Read Again
             </button>
           )}
           
