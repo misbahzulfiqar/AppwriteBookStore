@@ -1,5 +1,6 @@
 @import "tailwindcss";
-        .auth-container {
+
+   .auth-container {
           position: relative;
           width: 100%;
           min-height: 100vh;
@@ -98,5 +99,238 @@
         .auth-button:hover {
           opacity: 0.9;
         }
+
+        .about-p{
+          margin-top: 20px;
+        }
         
-        /* If you want to apply these styles to the Input component globally */
+        .about-pp{
+          margin-top: 115px;
+        }
+        .about-container{
+          height: 510px
+        }
+        :root{
+  --green:#8b5a2b;
+  --dark-color:#6f4e37;
+  --black:#4b3a2a;
+  --light-color:#7a6652;
+  --border:.1rem solid rgba(75,58,42,.15);
+  --border-hover:.1rem solid var(--black);
+  --box-shadow:0 .5rem 1rem rgba(75,58,42,.15);
+}
+.head{
+ color:var(--black);
+  font-size: 4.5rem;
+}
+/* Full page background */
+.library-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8f4f0, #ffffff);
+  padding: 40px 24px; /* top/bottom + some side padding */
+  font-family: Arial, sans-serif;
+}
+
+/* Full-width container */
+.library-container {
+  width: 95%;        /* Almost full width */
+  max-width: 1600px; /* Prevent it from being too wide on large screens */
+  margin: 0 auto;    /* Center horizontally */
+}
+
+/* Page Header */
+.library-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.library-title {
+  font-size: 3rem;  /* Bigger title */
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 12px;
+}
+
+.library-subtitle {
+  color: #555555;
+  font-size: 1.25rem; /* Bigger subtitle */
+}
+
+/* Loading spinner */
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20rem; /* taller */
+  text-align: center;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #8b5a2b;
+  border-radius: 50%;
+  width: 64px;   /* bigger spinner */
+  height: 64px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #666666;
+  font-size: 1.2rem;
+}
+
+/* Empty State */
+.empty-state-wrapper {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.empty-state-box {
+  display: inline-block;
+  background-color: white;
+  padding: 48px; /* bigger padding */
+  border-radius: 32px; /* bigger rounded corners */
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  width: 100%;
+}
+
+.empty-icon {
+  font-size: 5rem;  /* bigger icon */
+  margin-bottom: 24px;
+}
+
+.empty-title {
+  font-size: 1.75rem; /* bigger title */
+  font-weight: 600;
+  color: #555555;
+  margin-bottom: 16px;
+}
+
+.empty-text {
+  color: #666666;
+  max-width: 1000px; /* wider text area */
+  margin: 0 auto 32px auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.empty-button {
+  background-color: #8b5a2b;
+  color: white;
+  font-weight: 600;
+  padding: 16px 48px; /* bigger button */
+  font-size: 1.1rem;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.empty-button:hover {
+  background-color: #a67c52;
+}
+
+.form-container{
+  padding: 30px;
+}
+
+.margin{
+  margin-top: 10px;
+}
+
+.input-fields input{
+  margin-top: 10px;
+  width: 200px;
+  background-color: #e5ecf3;
+  padding: 8px;
+  font-size: 10px;
+}
+.space{
+  padding: 10px;
+}
+   /* If you want to apply these styles to the Input component globally */
+.pdf-reader-page {
+  padding: 20px;
+}
+
+.pdf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #a67c52;
+}
+
+.resume-info {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.space{
+  padding: 50px;
+}
+
+.btn-margin{
+  padding-top: 4px;
+}
+
+.margin-sp{
+  padding-top: 22px;
+}
+
+.mar-bottom{
+  margin-bottom: 12px;
+}
+
+.ex-adding{
+  padding: 3px;
+}
+.upload-btn{
+  height: 20px !important;
+}
+.div-padding{
+  padding: 12px;
+}
+
+.lib-summary{
+  margin-top: 30px;
+}
+.heights button{
+  height: 35px;
+}
+.text-centerr{
+  padding-top: 35px;
+  border: 1px solid gray;
+}
+.margin input, textarea{
+  background-color: rgb(239, 243, 246);
+  padding: 5px;
+}
+.back-btn{
+  padding: 5px;
+}
+.pdfs-div{
+  padding: 20px;
+}
